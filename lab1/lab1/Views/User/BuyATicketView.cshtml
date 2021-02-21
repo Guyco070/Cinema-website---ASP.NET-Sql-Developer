@@ -1,0 +1,153 @@
+﻿@model lab1.ViewModel.MTHViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "BuyATicketView";
+}
+
+<style>
+    h1{ text-align: center; }
+    h2{ text-align: center; }
+    h3{ text-align: center; }
+    h4{ text-align: center; }
+    lable{ text-align: center; }
+    p{ text-align: center; }
+    div{ text-align: center; }
+</style>
+<h2>Buy A Ticket</h2>
+<h3>@Model.movie.movieName</h3>
+
+<div>
+    <img src=@Model.movie.movieImg height="380" width="252" alt=@Model.movie.movieName style="margin:9px" /><br /><br />
+    <u>popularity:</u> @Model.movie.popularity<br />
+    <u>Category:</u> @Model.movie.category<br />
+    <u>Date:</u> @Model.movie.movieDate <br />
+    <u>At Time:</u> @Model.movie.movieTime <br />
+    <u>Hall:</u> @Model.movie.hall <br />
+    <u>Cost:</u>@Model.movie.cost <br />
+    @{
+        if (@Model.movie.sale != 0)
+        {
+            <del style="color:red">@Model.movie.cost $</del> <lable style="margin-left:7px"></lable>
+            <lable style="color:green">@Model.movie.newCost $</lable> <lable style="margin-left:7px"></lable>
+            <u style="color:green">(@Model.movie.sale %  Sale)</u>
+        }
+        else
+        { <lable> @Model.movie.cost $</lable> }
+    }
+    <br />  <br />
+    <u>Minimal age:</u>  @Model.movie.minAge
+    <br />  <br />
+
+
+    <table style="width:800px" border="0" align="center">
+        @{
+            var peacked2 = ViewBag.Peacked;
+            List<Ticket> tempTickets = Model.tickets;
+            for (int i = 1; i <= ViewBag.hallSeats; i++)
+            {
+                if (i % 10 == 1)
+                {
+                    <tr style="margin:80px"></tr>
+                }
+
+                <tb style="margin:80px">
+                    @*@if(i % 10 == 1){ <th>@row</th> @(row++)}*@
+                    <th style="text-align:center">
+                        <div style="text-align:center">
+                            <form action="peackASeat" method="post">
+                                <br />
+                                <lable style="text-align:center">@(i)</lable><br />
+                                <input id="movieNameId" name="movieName" type="text" value="@Model.movie.movieName" hidden="hidden" />
+                                <input id="hallId" name="hall" type="text" value="@Model.movie.hall" hidden="hidden" />
+                                <input id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" hidden="hidden" />
+                                <input id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" hidden="hidden" />
+
+                                @if (Model.tickets.Count != 0)
+                                {
+                                    foreach (Ticket ticket in tempTickets)
+                                    {
+                                        if (ticket.seat == i)
+                                        {
+                                            if (ticket.token == 1)
+                                            {
+                                                <input id="seat" type="text" name="seat" value="@i" hidden="hidden" />
+                                                <input id="token" type="text" name="token" value="1" hidden="hidden" />
+                                                <input id="@("but" + @i + "Id")" value="@i" type="image" src="https://i.imgur.com/Iam7COe.jpg" height="50" width="50" name="@("but" + @i)" onclick="this.src == 'https://i.imgur.com/Iam7COe.jpg' ? this.src = 'https://i.imgur.com/LMtdjzJ.jpg' : this.src = 'https://i.imgur.com/Iam7COe.jpg'" />}
+                                            else
+                                            {
+                                                <input id="seat" type="text" name="seat" value="@i" hidden="hidden" />
+                                                <input id="token" type="text" name="token" value="2" hidden="hidden" />
+                                                <img id="@("but" + @i + "Id")" value="@i" type="image" src="https://i.imgur.com/CXlyGvV.jpg" height="50" width="50" alt="Token" name="@("but" + @i)" onclick="this.src = 'https://i.imgur.com/CXlyGvV.jpg' " />}
+                                            tempTickets.Remove(ticket);
+                                        }
+                                        else
+                                        {
+                                            <input id="seat" type="text" name="seat" value="@i" hidden="hidden" />
+                                            <input id="token" type="text" name="token" value="0" hidden="hidden" />
+                                            <input id="@("but" + @i + "Id")" value="@i" type="image" src="https://i.imgur.com/LMtdjzJ.jpg" height="50" width="50" name="@("but" + @i)" onclick="this.src == 'https://i.imgur.com/LMtdjzJ.jpg' ? this.src = 'https://i.imgur.com/Iam7COe.jpg' : this.src = 'https://i.imgur.com/LMtdjzJ.jpg'" />
+                                        }
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    <input id="token" type="text" name="token" value="0" hidden="hidden" />
+                                    <input id="seat" type="text" name="seat" value="@i" hidden="hidden" />
+                                    <input clickable="false" id="@("but" + @i)" value="@i" type="image" src="https://i.imgur.com/LMtdjzJ.jpg" height="50" width="50" name="@("but" + @i)" onclick="this.src == 'https://i.imgur.com/LMtdjzJ.jpg' ? this.src = 'https://i.imgur.com/Iam7COe.jpg' : this.src = 'https://i.imgur.com/LMtdjzJ.jpg'" />
+                                }
+
+                            </form>
+                        </div>
+                    </th>
+                </tb>
+            }
+        }
+    </table>
+
+    <form action="startPageButton" method="post">
+        <input id="movieNameId" name="movieName" type="text" value="@Model.movie.movieName" hidden="hidden" />
+        <input id="hallId" name="hall" type="text" value="@Model.movie.hall" hidden="hidden" />
+        <input id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" hidden="hidden" />
+        <input id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" hidden="hidden" />
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form>
+    @if (Model.tickets.Count > 0)
+    {
+        <form action="enterToShoppingCart" method="post">
+            <input type="submit" value="Go to Cart" name="isPayNow" />
+            <input id="movieNameId" name="movieName" type="text" value="@Model.movie.movieName" hidden="hidden" />
+            <input id="hallId" name="hall" type="text" value="@Model.movie.hall" hidden="hidden" />
+            <input id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" hidden="hidden" />
+            <input id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" hidden="hidden" />
+        </form>
+    }
+    @if (ViewBag.addShoppingCart == "true")
+    {
+        <form action="isPayNow" method="post">
+            <input id="movieNameId" name="movieName" type="text" value="@Model.movie.movieName" hidden="hidden" />
+            <input id="hallId" name="hall" type="text" value="@Model.movie.hall" hidden="hidden" />
+            <input id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" hidden="hidden" />
+            <input id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" hidden="hidden" />
+
+            <input id="enterToShoppingBut" value="Add to shopping cart" type="submit" style="margin:7px" onclick="myFunction()" />
+        </form>
+    }
+</div>
+
+<script>
+    function peackASeat(name) {
+        var seatButton = document.getElementById(name);
+        if (seatButton.src == "https://i.imgur.com/LMtdjzJ.jpg");
+        {
+            seatButton.src = "https://i.imgur.com/CXlyGvV.jpg";
+        }else { seatButton.src = "https://i.imgur.com/LMtdjzJ.jpg"; }
+        seatButton.src = "https://i.imgur.com/CXlyGvV.jpg";
+    }
+    var seatButton = document.getElementById("but1");
+    seatButton.addEventListener('keypress', "but1", peackASeat, false);
+
+    window.onhashchange = function () {
+
+    }
+</script>

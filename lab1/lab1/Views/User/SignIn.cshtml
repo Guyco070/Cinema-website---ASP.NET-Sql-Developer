@@ -1,0 +1,32 @@
+﻿@model lab1.ViewModel.UserViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "SignIn";
+}
+
+<h4>Sign in</h4>
+
+<div>
+    Enter your details:
+    <form action="SignIn" method="post">
+        <table style="width:30%">
+            <tr>
+                <td>I.D:</td>
+                <td><input style="margin:4px" id="idNumber" name="idSearch" type="text" /></td>
+            </tr>
+            <tr>
+                <td>Password: </td>
+                <td><input style="margin:4px" id="uPassword" name="passSearch" type="password" /></td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td><input style="margin:4px" id="signButton" value="Connect" type="submit" /></td>
+            </tr>
+        </table>
+    </form>
+    <form action="startPageButton" method="post">
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form>
+</div>
+

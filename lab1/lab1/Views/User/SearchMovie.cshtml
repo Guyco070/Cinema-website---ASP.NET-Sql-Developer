@@ -1,0 +1,45 @@
+﻿@model lab1.ViewModel.MovieViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "SearchMovie";
+}
+
+<h2>SearchMovie</h2>
+
+<div>
+    Search movie:
+    <form action="searchMovie" method="post">
+        Movie Name: <input id="movieId" name="movieNameS" type="text" /> <br />
+        Date:  <input id="movieDateId" name="movieDateS" type="text" />  <br />
+        Time:        <input id="movieTimeId" name="movieTimeS" type="text" /> <br />
+        <br /><br />
+        <input id="searchMovieButton" value="Search Movie" type="submit" style="margin:7px" />
+    </form>
+    <form action="startPageButton" method="post">
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form>
+
+    <table style="width:80%" border="1" align="center">
+        <tr>
+            <th style="text-align:center">Movie image</th>
+            <th style="text-align:center">Movie Name</th>
+            <th style="text-align:center">Date</th>
+            <th style="text-align:center">Time</th>
+            <th style="text-align:center">Hall</th>
+            <th style="text-align:center">Cost</th>
+        </tr>
+
+        @foreach (Movie movie in Model.movies)
+        {
+            <tr style="text-align:center">
+                <td> <img src=@movie.movieImg height="95" width="63" alt=@movie.movieName /> </td>
+                <td>@movie.movieName</td>
+                <td>@movie.movieDate</td>
+                <td>@movie.movieTime</td>
+                <td>@movie.hall</td>
+                <td>@movie.cost $</td>
+            </tr>
+        }
+    </table>
+</div>

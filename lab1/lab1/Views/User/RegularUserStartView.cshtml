@@ -1,0 +1,41 @@
+﻿@model lab1.ViewModel.UserViewModel
+
+@{
+    ViewBag.Title = "RegularUserStartView";
+}
+
+<h2>Wellcome @Model.user.firstName @Model.user.lastName</h2>
+
+<div>
+    <h4>Users managemet</h4>
+    <form action="addUser" method="post">
+        <input id="addUserButton" value="Add user" type="submit" />
+    </form>
+    <br />
+    <h4>Movie managemet</h4>
+    <form action="searchMovie" method="post">
+        <input id="searchMovieButton" value="Search movie" type="submit" />
+    </form>
+
+    <form action="bookSeat" method="post">
+        <input id="bookSeatButton" value="Book seat" type="submit" />
+    </form>
+    <br />
+    <form action="changeSeat" method="post">
+        <input id="changeSeatButton" value="Change a seat" type="submit" />
+    </form>
+    <br />
+
+    <form action="makePayment" method="post">
+        <input id="makePaymentButton" value="Make payment" type="submit" />
+    </form>
+    <br />
+    <form action="SignInStart" method="post">
+        <input id="SignOutStartButton" value="Sign Out" type="submit" style="margin-top:7px" />
+    </form>
+
+    <br /><br />
+    <form action="MoviesSort" method="post">
+        <input id="homePage" value="Beck home page" type="submit" style="margin:7px" />
+    </form>
+</div>

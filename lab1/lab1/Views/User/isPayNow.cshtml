@@ -1,0 +1,53 @@
+﻿@model lab1.ViewModel.MTHViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "isPayNow";
+}
+
+<h2>isPayNow</h2>
+
+<form action="enterToShoppingCart" method="post">
+    <input id="movieNameId" name="movieName" type="text" value="@Model.movie.movieName" hidden="hidden" />
+    <input id="hallId" name="hall" type="text" value="@Model.movie.hall" hidden="hidden" />
+    <input id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" hidden="hidden" />
+    <input id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" hidden="hidden" />
+
+    <h4>The seat/s to "@Model.movie.movieName" have been saved in your cart: </h4>
+    <u>popularity:</u> @Model.movie.popularity<br />
+    <u>Category:</u> @Model.movie.category<br />
+    <u>Date:</u> @Model.movie.movieDate <br />
+    <u>At Time:</u> @Model.movie.movieTime <br />
+    <u>Hall:</u> @Model.movie.hall <br />
+    <u>Cost:</u>@Model.movie.cost $<br />
+    @{ var sumCost = 0;
+        var i = 1;
+        var seats = "";
+        List<Ticket> tempTickets = new List<Ticket>();
+        foreach (Ticket ticket in Model.tickets)
+        {
+            if (ticket.token == 1) { tempTickets.Add(ticket); }
+        }
+        foreach (Ticket ticket in tempTickets)
+        {
+            if (ticket.token == 1)
+            {
+                sumCost += ticket.cost;
+                if (i < tempTickets.Count)
+                {
+                    seats += @ticket.seat + ",";
+                }
+                else
+                { seats += @ticket.seat; }
+            }
+            i++;
+        }
+        <u>Number of Tickets: </u> @i <br />
+        <u>Seats: </u> @seats <br />
+        <u>Total Cost: </u> @(sumCost + "$")<br />
+        <br /><br />
+        <h4>You want pay now or later ?</h4> <br />
+        <input type="submit" value="Pay now" name="isPayNow" />
+        <input type="submit" value="Pay later" name="isPayNow" />
+    }
+</form>

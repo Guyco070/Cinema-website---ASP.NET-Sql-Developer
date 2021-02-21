@@ -1,0 +1,61 @@
+﻿@model lab1.ViewModel.UserViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "addRegularUser";
+}
+
+<h4>Add User</h4>
+<div>
+    Enter new user details:
+    <form action="addUserButton" method="post">
+        <table style="width:30%">
+            <tr>
+                <td>First Name:</td>
+                <td><input style="margin:4px" id="firstNameId" name="firstName" type="text" value="@Model.user.firstName" /> @Html.ValidationMessageFor(x => x.user.firstName)</td>
+            </tr>
+            <tr>
+                <td>Last Name: </td>
+                <td><input style="margin:4px" id="lastNameId" name="lastName" type="text" value="@Model.user.lastName" /> @Html.ValidationMessageFor(x => x.user.lastName)</td>
+            </tr>
+            <tr>
+                <td>I.D: </td>
+                <td><input style="margin:4px" id="idNumberId" name="idNumber" type="text" value="@Model.user.idNumber" /> @Html.ValidationMessageFor(x => x.user.idNumber)</td>
+            </tr>
+            <tr>
+                <td>Password: </td>
+                <td><input style="margin:4px" id="uPasswordId" name="uPassword" type="password" value="@Model.user.uPassword" /> @Html.ValidationMessageFor(x => x.user.uPassword)</td>
+            </tr>
+            <tr>
+                <td>Type: user </td>
+                <td><input style="margin:4px" id="uTypeId" name="uType" type="text" value="user" hidden="hidden" /> @Html.ValidationMessageFor(x => x.user.uType)</td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td><input id="addUserButton" value="Add user" type="submit" style="margin:7px" /></td>
+            </tr>
+        </table>
+    </form>
+    <form action="startPageButton" method="post">
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form>
+
+    <table style="width:80%" border="1" align="center">
+        <tr>
+            <th style="text-align:center">First Name</th>
+            <th style="text-align:center">Last Name</th>
+            <th style="text-align:center">I.D</th>
+            <th style="text-align:center">Type</th>
+        </tr>
+
+        @foreach (User user in Model.users)
+        {
+            <tr style="text-align:center">
+                <td>@user.firstName   </td>
+                <td>@user.lastName   </td>
+                <td>@user.idNumber</td>
+                <td>@user.uType</td>
+            </tr>
+        }
+    </table>
+</div>

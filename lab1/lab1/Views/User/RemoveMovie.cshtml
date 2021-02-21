@@ -1,0 +1,71 @@
+﻿@model lab1.ViewModel.MovieViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "RemoveMovie";
+}
+
+<h2>RemoveMovie</h2>
+
+<div>
+    Search movie to remove:
+    <form action="removeSearchMovie" method="post">
+        Movie Name: <input id="movieId" name="movieNameS" type="text" /> <br />
+        Date:  <input id="movieDateId" name="movieDateS" type="text"  />  <br />
+        Time:        <input id="movieTimeId" name="movieTimeS" type="text"  /> <br />
+        Hall:  <input id="hallId" name="hallS" type="text"  /> <br />
+        Minimal cost:        <input id="costId" name="costS" type="text" style="width:40px" /> $ <br />
+        <br /><br />
+        <input id="searchMovieButton" value="Search Movie" type="submit" style="margin:7px" />
+    </form>
+    <form action="startPageButton" method="post">
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form>
+
+    <table style="width:80%" border="1" align="center">
+        <tr>
+            <th style="text-align:center">Movie image</th>
+            <th style="text-align:center">Movie Name</th>
+            <th style="text-align:center">Date</th>
+            <th style="text-align:center">Time</th>
+            <th style="text-align:center">Hall</th>
+            <th style="text-align:center">Cost</th>
+            <th style="text-align:center">Change cost</th>
+            <th style="text-align:center">Remove</th>
+        </tr>
+
+        @foreach (Movie movie in Model.movies)
+        {
+        <tr style="text-align:center">
+            <td> <img src=@movie.movieImg height="95" width="63" alt=@movie.movieName /> </td>
+            <td>@movie.movieName</td>
+            <td>@movie.movieDate</td>
+            <td>@movie.movieTime</td>
+            <td>@movie.hall</td>
+            <td>@movie.cost $</td>
+            <td>
+                <form action="ChangeH_Or_COfThisMovie" method="post">
+                    <input id="hallId" name="hall" type="text" value="@movie.hall" hidden="hidden" />
+                    <input id="movieDateId" name="movieDate" type="text" value="@movie.movieDate" hidden="hidden" />
+                    <input id="movieTimeId" name="movieTime" type="text" value="@movie.movieTime" hidden="hidden" />
+                    New hall:        <input id="newHallId" name="newHallS" type="text" style="width:40px" /> @Html.ValidationMessageFor(x => x.movie.hall)
+                    <br />
+                    New cost:        <input id="newCostId" name="newCostS" type="text" style="width:40px" /> @Html.ValidationMessageFor(x => x.movie.cost) $
+                    <br />
+                    <input id="changeButton" value="Update" type="submit" style="margin-left:7px" />
+                </form>
+            </td>
+            <td>
+                <form action="removeThisMovie" method="post">
+                    <input id="hallId" name="hall" type="text" value="@movie.hall" hidden="hidden" />
+                    <input id="movieNameId" name="movieName" type="text" value="@movie.movieName" hidden="hidden" />
+                    <input id="movieDateId" name="movieDate" type="text" value="@movie.movieDate" hidden="hidden" />
+                    <input id="movieTimeId" name="movieTime" type="text" value="@movie.movieTime" hidden="hidden" />
+                    <input id="removeButton" value="Remove" type="submit" />
+                </form>
+            </td>
+        </tr>
+        }
+    </table>
+</div>
+

@@ -1,0 +1,135 @@
+﻿@model lab1.ViewModel.MovieViewModel
+@using lab1.Models;
+
+@{
+   ViewBag.Title = "MoviesViwer";
+}
+
+<h2>Movies</h2> 
+<div>
+    <form action="SignInStart" method="post">
+        <input value="Sign in" name="SignInButton" type="submit" style="margin:8px" />
+    </form>
+</div>
+
+<div>
+    Search movie:
+    <form action="MoviesSort" method="post">
+        <table style="width:40%">
+            <tr>
+                <td>Movie Name:</td>
+                <td><input style="margin:4px" id="movieId" name="movieNameS" type="text" /> </td>
+            </tr>
+            <tr>
+                <td>Date: </td>
+                <td><input style="margin:4px" id="movieDateId" name="movieDateS" type="text" /> </td>
+            </tr>
+            <tr>
+                <td>Time: </td>
+                <td><input style="margin:4px" id="movieTimeId" name="movieTimeS" type="text"/> </td>
+            </tr>
+            <tr>
+                <td>Hall:</td>
+                <td><input style="margin:4px" id="hallId" name="hallS" type="text"/></td>
+            </tr>
+            <tr>
+                <td>Cost: from</td>
+                <td><input id="costId" name="minCostS" type="text" style="width:40px" /> $ </td> <td> to  <input id="costId" name="maxCostS" type="text" style="width:40px" /> $</td>
+            </tr>
+            <tr><td><br /></td></tr>
+        </table>
+        @*<form action="MoviesSort" method="post">
+            Movie Name: <input id="movieId" name="movieNameS" type="text" /> <br />
+            Date:  <input id="movieDateId" name="movieDateS" type="text" />  <br />
+            Time:        <input id="movieTimeId" name="movieTimeS" type="text" /> <br />
+            Hall:  <input id="hallId" name="hallS" type="text" /> <br />
+            cost:  from      <input id="costId" name="minCostS" type="text" style="width:40px" /> $
+            <lable style="margin-left:5px"> to </lable>        <input id="costId" name="maxCostS" type="text" style="width:40px" /> $ <br />
+            <br />*@
+            <label for="SortBy">Sort by:</label>
+            <select id="SortBy" name="SortBy" property="true" value="filter">
+                <option value="Price decrease">Price decrease</option>
+                <option value="Price increase">Price increase</option>
+                <option value="Most popular">Most popular</option>
+            </select>
+
+            <label for="filterBy" style="margin-left:7px">Category</label>
+            <select id="filterBy" name="filterBy" property="true" value="Category">
+                <option value="All">All</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Family">Family</option>
+                <option value="Animation">Animation</option>
+            </select>
+            <input id="onSaleCB" value="On sale" type="checkbox" style="margin:7px" name="onSaleCB" />
+            <label for="onSaleCb">On sale</label>
+            <input id="showAllDatesCB" value="Show all Dates" type="checkbox" style="margin:7px" name="showAllDatesCB" />
+            <label for="showAllDatesCB">Show all Dates</label>
+            <br />
+            <input id="moviesSortButton" value="Search Movie" type="submit" style="margin:7px" />
+        </form>
+        <form action="startPageButton" method="post">
+            <input id="startPageButton" value="Clear filter and sort" type="submit" style="margin:7px" />
+        </form>
+  
+        <form action="enterToShoppingCart" method="post">
+            <input type="submit" value="Go to Cart" name="isPayNow" />
+        </form>
+        
+            <table style="width:800px" border="1" align="center">
+                @{ int i = 1;
+                    foreach (Movie movie in Model.movies)
+                    {
+                        if (i % 5 == 0)
+                        {
+                            <tr style="margin:80px"></tr> }
+
+                        <tb style="margin:80px">
+                            <th style="text-align:center">
+                                @movie.movieName
+
+                                <div style="text-align:center">
+                                    <form action="buyATicket" method="post">
+                                        <br />
+                                        <input type="image" src=@movie.movieImg height="190" width="126" alt=@movie.movieName name=@movie.movieName />
+                                        <br />
+                                        <div style="font-weight:normal">
+                                            <input id="movieNameId" name="movieName" type="text" value="@movie.movieName" hidden="hidden" />                                        <input id="movieNameId" name="movieName" type="text" value="@movie.movieName" hidden="hidden" />
+                                            <input id="hallId" name="hall" type="text" value="@movie.hall" hidden="hidden" />
+                                            <input id="movieDateId" name="movieDate" type="text" value="@movie.movieDate" hidden="hidden" />
+                                            <input id="movieTimeId" name="movieTime" type="text" value="@movie.movieTime" hidden="hidden" />
+
+                                            <u>popularity:</u> @movie.popularity<br />
+                                            <u>Category:</u> @movie.category<br />
+                                            <u>Date:</u> @movie.movieDate <br />
+                                            <u>At Time:</u> @movie.movieTime <br />
+                                            <u>Hall:</u> @movie.hall <br />
+                                            <u>Duration:</u> @movie.durationDisplay <br />
+                                            <u>Cost:</u>
+                                            @{
+                                                if (@movie.sale != 0)
+                                                { <del style="color:red">@movie.cost $</del> <lable style="margin-left:7px"></lable>
+                                                <lable style="color:green">@movie.newCost $</lable> <lable style="margin-left:7px"></lable>
+                                                <u style="color:green">(@movie.sale %  Sale)</u>
+                                            }
+                                            else
+                                            { <lable> @movie.cost $</lable> }
+                                            }
+                                            <br />  <br />
+                                            <u>Minimal age:</u>  @movie.minAge
+
+                                            <br /> <br />
+</form>
+                                    </div>
+
+</th>
+                        </tb>
+                        i++;
+
+                    }
+                }
+            </table>
+        
+</div>

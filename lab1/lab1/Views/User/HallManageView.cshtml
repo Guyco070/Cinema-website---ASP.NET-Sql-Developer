@@ -1,0 +1,39 @@
+﻿@model lab1.ViewModel.HallViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "HallManageView";
+}
+
+<h2>HallManageView</h2>
+
+<div>
+    <table style="width:80%" border="1" align="center">
+        <tr>
+            <th style="text-align:center">Hall Id: </th>
+            <th style="text-align:center">Seats</th>
+            <th style="text-align:center">Change seats</th>
+        </tr>
+
+        @foreach (Hall hall in Model.halls)
+        {
+            <tr style="text-align:center">
+                <td>@hall.hallId</td>
+                <td>@hall.seats</td>
+                <td>
+                    <form action="ChangeThisHallSeats" method="post">
+                        <input id="hallId" name="hallId" type="text" value="@hall.hallId" hidden="hidden" />
+                        <input id="seatsId" name="seats" type="text" value="@hall.seats" hidden="hidden" />
+                        New seats:        <input id="newSeats" name="newSeats" type="text" style="width:40px" value="" /> @Html.ValidationMessageFor(x => x.hall.seats)
+                        <input id="Update" value="Update" type="submit" style="margin-left:7px" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+    <br /><br />
+    <form action="startPageButton" method="post">
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form>
+</div>
+

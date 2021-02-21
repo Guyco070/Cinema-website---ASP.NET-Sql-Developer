@@ -1,0 +1,111 @@
+﻿@model lab1.ViewModel.MovieViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "addMovie";
+}
+
+<h2>add Movie</h2>
+
+<div>
+    Enter new user details:
+    <form action="addMovieButton" method="post">
+        <table style="width:30%">
+            <tr>
+                <td>Movie Name:</td>
+                <td><input style="margin:4px" id="movieId" name="movieName" type="text" value="@Model.movie.movieName" /> @Html.ValidationMessageFor(x => x.movie.movieName)</td>
+            </tr>
+            <tr>
+                <td>Date: </td>
+                <td><input style="margin:4px" id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" /> @Html.ValidationMessageFor(x => x.movie.movieDate)</td>
+            </tr>
+            <tr>
+                <td>Time: </td>
+                <td><input style="margin:4px" id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" /> @Html.ValidationMessageFor(x => x.movie.movieTime)</td>
+            </tr>
+            <tr>
+                <td>Hall:</td>
+                <td><input style="margin:4px" id="hallId" name="hall" type="text" value="@Model.movie.hall" /> @Html.ValidationMessageFor(x => x.movie.hall)</td>
+            </tr>
+            <tr>
+                <td>Cost: </td>
+                <td><input style="margin:4px" id="costId" name="cost" type="text" value="@Model.movie.cost" /> $ @Html.ValidationMessageFor(x => x.movie.cost)</td>
+            </tr>
+            <tr>
+                <td>Sale: </td>
+                <td><input style="margin:4px" id="saleId" name="sale" type="text" value="@Model.movie.sale" /> % @Html.ValidationMessageFor(x => x.movie.sale)</td>
+            </tr>
+            <tr>
+                <td>Category:</td>
+                <td><input style="margin:4px" id="categoryId" name="category" type="text" value="@Model.movie.category" />  @Html.ValidationMessageFor(x => x.movie.category)</td>
+            </tr>
+            <tr>
+                <td>Minimal age: </td>
+                <td><input style="margin:4px" id="minAgetId" name="minAge" type="text" value="@Model.movie.minAge" />  @Html.ValidationMessageFor(x => x.movie.minAge)</td>
+            </tr>
+            <tr>
+                <td>Duration: </td>
+                <td><input style="margin:4px" id="durationId" name="duration" type="text" value="@Model.movie.duration" placeholder="Minutes" /> @Html.ValidationMessageFor(x => x.movie.duration)</td>
+            </tr>
+            <tr>
+                <td>Image url: </td>
+                <td><input style="margin:4px" id="movieImgId" name="movieImg" type="text" value="@Model.movie.movieImg" /> @Html.ValidationMessageFor(x => x.movie.movieImg)</td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td><input id="addMovieButton" value="Add Movie" type="submit" style="margin:7px" /></td>
+            </tr>
+        </table>
+        @*Movie Name: <input id="movieId" name="movieName" type="text" value="@Model.movie.movieName" /> @Html.ValidationMessageFor(x => x.movie.movieName) <br />
+        Date:  <input id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" /> @Html.ValidationMessageFor(x => x.movie.movieDate) <br />
+        Time:        <input id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" /> @Html.ValidationMessageFor(x => x.movie.movieTime) <br />
+        Hall:  <input id="hallId" name="hall" type="text" value="@Model.movie.hall" /> @Html.ValidationMessageFor(x => x.movie.hall) <br />
+        Cost:        <input id="costId" name="cost" type="text" value="@Model.movie.cost" /> $ @Html.ValidationMessageFor(x => x.movie.cost) <br />
+        Sale:        <input id="saleId" name="sale" type="text" value="@Model.movie.sale" /> % @Html.ValidationMessageFor(x => x.movie.sale) <br />
+        Category:        <input id="categoryId" name="category" type="text" value="@Model.movie.category" />  @Html.ValidationMessageFor(x => x.movie.category) <br />
+        Minimal age:        <input id="minAgetId" name="minAge" type="text" value="@Model.movie.minAge" />  @Html.ValidationMessageFor(x => x.movie.minAge) <br />
+        Image url:        <input id="movieImgId" name="movieImg" type="text" value="@Model.movie.movieImg" /> @Html.ValidationMessageFor(x => x.movie.movieImg)
+        <br /><br />
+        <input id="addMovieButton" value="Add Movie" type="submit" style="margin:7px" />*@
+        @if (@ViewBag.errorMS == "false")
+        {
+            <h5 style="color:red" name="existEM" runat="server"> Sorry, hall @Model.movie.hall is already token at @Model.movie.movieDate - @Model.movie.movieTime.</h5>
+            <h5 style="color:red" name="existEM" runat="server">Try to set it at another hall.</h5><br />
+        }
+    </form>
+    <form action="startPageButton" method="post">
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form><br />
+    <table style="width:80%" border="1" align="center">
+        <tr>
+            <th style="text-align:center">Movie image</th>
+            <th style="text-align:center">Movie Name</th>
+            <th style="text-align:center">Date</th>
+            <th style="text-align:center">Time</th>
+            <th style="text-align:center">Hall</th>
+            <th style="text-align:center">category</th>
+            <th style="text-align:center">cost</th>
+            <th style="text-align:center">Sale</th>
+            <th style="text-align:center">Popularity</th>
+            <th style="text-align:center">Category</th>
+            <th style="text-align:center">Minimal age</th>
+        </tr>
+
+        @foreach (Movie movie in Model.movies)
+        {
+        <tr style="text-align:center">
+            <td> <img src=@movie.movieImg height="95" width="63" alt=@movie.movieName /> </td>
+            <td>@movie.movieName   </td>
+            <td>@movie.movieDate   </td>
+            <td>@movie.movieTime</td>
+            <td>@movie.hall</td>
+            <td>@movie.category </td>
+            <td>@movie.cost $</td>
+            <td>@movie.sale </td>
+            <td>@movie.popularity</td>
+            <td>@movie.category </td>
+            <td>@movie.minAge </td>
+        </tr>
+        }
+    </table>
+</div>

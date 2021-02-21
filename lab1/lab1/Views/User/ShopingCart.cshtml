@@ -1,0 +1,250 @@
+﻿@model lab1.ViewModel.MTHViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "ShopingCart";
+}
+
+<h2>Shoping Cart</h2>
+<div>
+    <table style="width:800px" border="1" align="center">
+        @{
+            int i = 1;
+            List<Movie> shownTickets = new List<Movie>();
+            foreach (Movie movie in Model.movies)
+            {
+                if (!shownTickets.Contains(movie))
+                {
+                    if (i % 2 == 0)
+                    {
+                        <tr style="margin:80px"></tr> }
+
+                    <tb style="margin:80px">
+                        <th style="text-align:center">
+                            @movie.movieName
+
+                            <div style="text-align:center">
+                                <form action="buyATicket" method="post">
+                                    <br />
+                                    <input type="image" src=@movie.movieImg height="190" width="126" alt=@movie.movieName name=@movie.movieName />
+                                    <br />
+                                    <div style="font-weight:normal">
+                                        <input id="movieNameId" name="movieName" type="text" value="@movie.movieName" hidden="hidden" />
+                                        <input id="hallId" name="hall" type="text" value="@movie.hall" hidden="hidden" />
+                                        <input id="movieDateId" name="movieDate" type="text" value="@movie.movieDate" hidden="hidden" />
+                                        <input id="movieTimeId" name="movieTime" type="text" value="@movie.movieTime" hidden="hidden" />
+
+                                        <u>popularity:</u> @movie.popularity<br />
+                                        <u>Category:</u> @movie.category<br />
+                                        <u>Date:</u> @movie.movieDate <br />
+                                        <u>At Time:</u> @movie.movieTime <br />
+                                        <u>Hall:</u> @movie.hall <br />
+                                        <u>Minimal age:</u> @movie.minAge<br />
+                                        <u>Cost:</u>
+                                        @{
+                                            if (@movie.sale != 0)
+                                            { <del style="color:red">@movie.cost $</del> <lable style="margin-left:7px"></lable>
+                                            <lable style="color:green">@movie.newCost $</lable> <lable style="margin-left:7px"></lable>
+                                            <u style="color:green">(@movie.sale %  Sale)</u>
+                                        }
+                                        else
+                                        { <lable> @movie.cost $</lable> <br /> }
+                                    var sumCost = 0;
+                                    i = 1;
+                                    var seats = "";
+                                    List<Ticket> tempTickets = new List<Ticket>();
+                                    foreach (Ticket ticket in Model.tickets)
+                                    {
+                                        if (ticket.movieName.Equals(movie.movieName)) { tempTickets.Add(ticket); }
+                                    }
+                                    foreach (Ticket ticket in tempTickets)
+                                    {
+                                        if (ticket.movieName.Equals(movie.movieName))
+                                        {
+                                            sumCost += ticket.cost;
+                                            if (i < tempTickets.Count)
+                                            {
+                                                seats += @ticket.seat + ",";
+                                            }
+                                            else
+                                            { seats += @ticket.seat; }
+                                        }
+                                        i++;
+                                    }
+                                    <u>Number of Tickets: </u> @i <br />
+                                    <u>Seats: </u> @seats <br />
+                                    <u>Cost for this movie: </u> @(sumCost + "$") <br /><br />
+                                        }
+
+                                        <br />
+                                        <br />
+                                </form>
+                            </div>
+                    <td>
+                        <form action="removeThisFromShopingCart" method="post">
+                            <input id="hallId" name="hall" type="text" value="@movie.hall" hidden="hidden" />
+                            <input id="movieNameId" name="movieName" type="text" value="@movie.movieName" hidden="hidden" />
+                            <input id="movieDateId" name="movieDate" type="text" value="@movie.movieDate" hidden="hidden" />
+                            <input id="movieTimeId" name="movieTime" type="text" value="@movie.movieTime" hidden="hidden" />
+                            <input id="removeButton" value="Remove" type="submit" />
+                        </form>
+                    </td>
+
+                    </th>
+                    </tb>
+                    <br />
+                    i++;
+                    shownTickets.Add(movie);
+                }
+            }
+        }
+    </table>
+</div>
+<br /> <br />
+@{
+    var AllCost = 0;
+    foreach (Ticket ticket in Model.tickets)
+    {
+        if (ticket.token == 1)
+        {
+            AllCost += ticket.cost;
+        }
+    }
+}
+
+
+
+<form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+
+    <!-- Identify your business so that you can collect the payments. -->
+    <input type="hidden" name="business" value="kin@kinskards.com">
+
+    <!-- Specify a PayPal Shopping Cart Add to Cart button. -->
+    <input type="hidden" name="cmd" value="_cart">
+    <input type="hidden" name="add" value="1">
+
+    <!-- Specify details about the item that buyers will purchase. -->
+    <input type="hidden" name="item_name" value="YGCinema">
+    <input type="hidden" name="amount" value="@AllCost">
+    <input type="hidden" name="currency_code" value="USD">
+
+    <img alt="" width="1" height="1"
+         src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif">
+</form>
+
+
+
+<h3 style="text-align:center"><b><u>PayPal Payment: </u></b><br /></h3>
+
+<div id="smart-button-container">
+    <div style="text-align: center;">
+        <div id="paypal-button-container"></div>
+    </div>
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script>
+<script>
+    function initPayPalButton() {
+        paypal.Buttons({
+            style: {
+                shape: 'rect',
+                color: 'gold',
+                layout: 'vertical',
+                label: 'paypal',
+
+            },
+
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{ "amount": { "currency_code": "USD", "value": 1 } }]
+                });
+            },
+
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            },
+
+            onError: function (err) {
+                console.log(err);
+            }
+        }).render('#paypal-button-container');
+    }
+    initPayPalButton();
+</script>
+
+<br />
+<br />
+
+<h3><b><u>Pay with our credit card method:</u></b></h3><br/>
+    <form action="pay" method="post">
+        <table style="width:30%">
+            <tr>
+                <td>First Name:</td>
+                <td><input style="margin:4px" id="firstNameId" name="firstName" type="text" value="@Model.user.firstName" /> @Html.ValidationMessageFor(x => x.user.firstName)</td>
+            </tr>
+            <tr>
+                <td>Last Name: </td>
+                <td><input style="margin:4px" id="lastNameId" name="lastName" type="text" value="@Model.user.lastName" /> @Html.ValidationMessageFor(x => x.user.lastName)</td>
+            </tr>
+            <tr>
+                <td>I.D: </td>
+                <td><input style="margin:4px" id="idNumberId" name="idNumber" type="text" value="" /> @Html.ValidationMessageFor(x => x.user.idNumber)</td>
+            </tr>
+            <tr>
+                <td>Credit card: </td>
+                <td><input style="margin:4px" id="uPasswordId" name="uPassword" type="text" value="" /> </td>
+            </tr>
+            <tr>
+                <td>CVC: </td>
+                <td><input style="margin:4px" id="uTypeId" name="uType" type="text" value="" /> @Html.ValidationMessageFor(x => x.user.uType)</td>
+            </tr>
+
+            <tr><td><br /></td></tr>
+        </table>
+
+        <div>
+            <p>Expiry Date: </p>
+            <select id="cc-exp-month" name="month">
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">Mar</option>
+                <option value="04">Apr</option>
+                <option value="05">May</option>
+                <option value="06">Jun</option>
+                <option value="07">Jul</option>
+                <option value="08">Aug</option>
+                <option value="09">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+            </select>
+            <select id="cc-exp-year" name="year">
+                <option value="13">2021</option>
+                <option value="14">2022</option>
+                <option value="15">2023</option>
+                <option value="16">2024</option>
+                <option value="17">2025</option>
+                <option value="18">2026</option>
+                <option value="19">2027</option>
+                <option value="20">2028</option>
+                <option value="21">2029</option>
+                <option value="22">2030</option>
+            </select>
+        </div>
+        
+        <h4><b><u>Total Cost: </u> @AllCost $ </b><br /></h4>
+        <input id="payButton" value="Pay" type="submit" style="margin:7px" />
+
+        <input id="movieNameId" name="movieName" type="text" value="@Model.movie.movieName" hidden="hidden" />
+        <input id="hallId" name="hall" type="text" value="@Model.movie.hall" hidden="hidden" />
+        <input id="movieDateId" name="movieDate" type="text" value="@Model.movie.movieDate" hidden="hidden" />
+        <input id="movieTimeId" name="movieTime" type="text" value="@Model.movie.movieTime" hidden="hidden" />
+    </form>
+
+
+
+
+<form action="enterToShoppingCart" method="post">
+    <input id="enterToShoppingCart" value="Beck to start page" type="submit" style="margin:7px" />
+</form>

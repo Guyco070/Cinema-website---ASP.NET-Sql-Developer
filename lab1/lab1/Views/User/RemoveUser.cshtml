@@ -1,0 +1,53 @@
+﻿@model lab1.ViewModel.UserViewModel
+@using lab1.Models;
+
+@{
+    ViewBag.Title = "RemoveUser";
+}
+
+<h2>RemoverUser</h2>
+
+<div>
+    Search user to remove:
+    <form action="searchUserRemove" method="post">
+        First Name: <input id="firstNameId" name="fNameSearch" type="text" /> <br />
+        Last Name: <input id="lastNameId" name="lNameSearch" type="text" />  <br />
+        I.D:        <input id="idNumberId" name="idNSearch" type="text" />
+        <br /><br />
+        <input id="searchButton" value="Search User" type="submit" style="margin:7px"/>
+    </form>
+    <form action="startPageButton" method="post">
+        <input id="startPageButton" value="Beck to start page" type="submit" style="margin:7px" />
+    </form>
+
+    <table style="width:80%" border="1" align="center">
+        <tr>
+            <th style="text-align:center">First Name</th>
+            <th style="text-align:center">Last Name</th>
+            <th style="text-align:center">I.D</th>
+            <th style="text-align:center">Type</th>
+            <th style="text-align:center">Action</th>
+        </tr>
+
+        @foreach (User user in Model.users)
+        {
+            <tr style="text-align:center">
+                <td>@user.firstName   </td>
+                <td>@user.lastName   </td>
+                <td>@user.idNumber</td>
+                <td>@user.uType</td>
+                <td>
+                    <form action="removeThisUser" method="post">
+                        <input id="firstNameId" name="firstName" type="text" value="@user.firstName" hidden="hidden" />
+                        <input id="lastNameId" name="lastName" type="text" value="@user.lastName" hidden="hidden" />
+                        <input id="idNumberId" name="idNumber" type="text" value="@user.idNumber" hidden="hidden" />
+                        <input id="uPasswordId" name="uPassword" type="text" value="@user.uPassword" hidden="hidden" />
+                        <input id="uTypeId" name="uType" type="text" value="@user.uType" hidden="hidden" />
+                        <input id="removeButton" value="Remove" type="submit" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
